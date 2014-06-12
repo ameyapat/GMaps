@@ -1,0 +1,99 @@
+<html>
+  <head>
+    <script type='text/javascript' src='https://www.google.com/jsapi'></script>
+    <script type='text/javascript'>
+     google.load('visualization', '1', {'packages': ['geochart']});
+     google.setOnLoadCallback(drawMarkersMap);
+
+      function drawMarkersMap() {
+      var data = google.visualization.arrayToDataTable([
+        ['City',   'Population'],
+        ['Los Angeles',      3857799],
+        ['Boston',     1324110],
+        ['New York',    8405837],
+        ['Chicago',     2714856],
+        ['Vancouver',   603502]
+		]);
+
+      var options = {
+        region: 'US',
+        backgroundColor: '#99B3CC',
+		displayMode: 'markers',
+        colorAxis: {colors: ['green', 'blue']},
+		
+      };
+
+      var chart = new google.visualization.GeoChart(document.getElementById('chart_div'));
+      chart.draw(data, options);
+    };
+    </script>
+	 
+      <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyA2lOq5bDRLEiK-dHqxHxosIQITi_zg5Kk&sensor=false">
+</script>
+    <script>
+// This example creates circles on the map, representing
+// populations in North America.
+
+// First, create an object containing LatLng and population for each city.
+var citymap = {};
+citymap['chicago'] = {
+  center: new google.maps.LatLng(41.878113, -87.629798),
+  population: 2714856
+};
+citymap['newyork'] = {
+  center: new google.maps.LatLng(40.714352, -74.005973),
+  population: 8405837
+};
+citymap['losangeles'] = {
+  center: new google.maps.LatLng(34.052234, -118.243684),
+  population: 3857799
+};
+citymap['vancouver'] = {
+  center: new google.maps.LatLng(49.25, -123.1),
+  population: 603502
+};
+
+var cityCircle;
+
+function initialize() {
+  // Create the map.
+  var mapOptions = {
+    zoom: 3,
+    center: new google.maps.LatLng(37.09024, -95.712891),
+    mapTypeId: google.maps.MapTypeId.TERRAIN
+  };
+
+  var map = new google.maps.Map(document.getElementById('map-canvas'),
+      mapOptions);
+
+  // Construct the circle for each value in citymap.
+  // Note: We scale the area of the circle based on the population.
+  for (var city in citymap) {
+    var populationOptions = {
+      strokeColor: '#FF0000',
+      strokeOpacity: 0.8,
+      strokeWeight: 2,
+      fillColor: '#FF0000',
+      fillOpacity: 0.35,
+      map: map,
+      center: citymap[city].center,
+      radius: Math.sqrt(citymap[city].population) * 100
+    };
+    // Add the circle for this city to the map.
+    cityCircle = new google.maps.Circle(populationOptions);
+  }
+}
+
+google.maps.event.addDomListener(window, 'load', initialize);
+
+    </script>
+  </head>
+  <body style="background:#99B3CC;">
+    <div id="chart_div" style="margin:10px;position:absolute; left:10%;width: 40%; height: 500px;"></div>
+	
+	
+<div id="map-canvas" style="margin:10px;position:absolute; top:0%;left:55%;width:40%;height:500px;"></div>
+<br>
+<u><h1 style="position:relative; font-family:Verdana; ">Population statistics on Maps</h1></u>
+  </body>
+</html>
